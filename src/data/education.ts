@@ -7,4 +7,5 @@ export const education: ListEntry[] = [
   },
   { text: 'Open Source Contributor, Firebase Genkit Plugin' },
   { text: 'Active Member & Speaker, Google Developer Group (GDG) Jakarta' },
+  { text: 'Languages: Indonesian (native), English (professional working proficiency)' },
 ];

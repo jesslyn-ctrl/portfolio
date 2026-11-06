@@ -1,41 +1,97 @@
 ---
 import SparkleName from './SparkleName.astro';
-import { profile, contactLinks } from '../data/profile';
+import { profile } from '../data/profile';
 import { url } from '../lib/url';
 ---
 
-<section class="hero">
+<section class="hero" data-sparkle-trail>
+  <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
   <div class="wrap">
-    <p class="eyebrow">Portfolio &amp; Resume</p>
-    <h1><SparkleName text={profile.name} /></h1>
-    <p class="role">{profile.role}</p>
-    <p class="summary">{profile.summary}</p>
-    <div class="actions">
+    <p class="eyebrow rise d1">Portfolio &amp; Resume</p>
+    <h1 class="rise d2"><SparkleName text={profile.name} gradient /></h1>
+    <p class="role rise d3">{profile.role}</p>
+    <p class="summary rise d4">{profile.summary}</p>
+    <div class="actions rise d5">
       <a class="button primary" href={url('/projects/')}>View projects</a>
-      <a class="button" href={`mailto:${profile.email}`}>Get in touch</a>
+      <a class="button" href={profile.github} target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      <a class="button" href={profile.linkedin} target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
     </div>
-    <ul class="contact">
-      {
-        contactLinks.map((link) => (
-          <li>
-            <a href={link.href} {...link.external ? { target: '_blank', rel: 'noopener' } : {}}>
-              {link.label}
-              {link.external && <span aria-hidden="true"> ↗</span>}
-            </a>
-          </li>
-        ))
-      }
-      <li>{profile.location}</li>
-    </ul>
+    <div class="meta rise d6">
+      <span class="email-wrap">
+        <a class="email" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <button class="copy-ic" type="button" data-copy={profile.email} aria-label="Copy email address" title="Copy email">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path class="i-copy" d="M9 9h10v11H9zM5 15V4h10"></path>
+            <path class="i-ok" d="M5 12.5l4.5 4.5L19 7.5"></path>
+          </svg>
+        </button>
+        <span class="copied" data-copied aria-live="polite"></span>
+      </span>
+      <span>{profile.location}</span>
+    </div>
   </div>
 </section>
 
 <style>
   .hero {
-    padding: 88px 0 64px;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 0 56px;
   }
+  .wrap {
+    position: relative;
+  }
+  .blobs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+  }
+  .b1 {
+    width: 260px;
+    height: 260px;
+    right: max(-60px, calc(50% - 560px));
+    top: -80px;
+    background: var(--accent-soft);
+  }
+  .b2 {
+    width: 140px;
+    height: 140px;
+    right: max(150px, calc(50% - 330px));
+    top: 70px;
+    background: var(--pink-soft);
+  }
+  .b3 {
+    width: 90px;
+    height: 90px;
+    right: max(40px, calc(50% - 440px));
+    top: 200px;
+    background: var(--gold-soft);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .blob {
+      animation: float 9s ease-in-out infinite;
+    }
+    .b2 {
+      animation-delay: -3s;
+    }
+    .b3 {
+      animation-delay: -6s;
+    }
+  }
+  @keyframes float {
+    50% {
+      transform: translate(-8px, 10px) scale(1.04);
+    }
+  }
+
   h1 {
-    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    font-size: clamp(2.6rem, 8vw, 3.8rem);
+    font-weight: 800;
     letter-spacing: -0.03em;
     margin: 0 0 10px;
   }
@@ -53,13 +109,14 @@ import { url } from '../lib/url';
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
   .button {
     display: inline-block;
     padding: 9px 18px;
     border: 1px solid var(--border);
     border-radius: 999px;
+    background: var(--bg);
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--text);
@@ -77,26 +134,98 @@ import { url } from '../lib/url';
     border-color: var(--accent);
     color: var(--bg);
   }
-  .contact {
+  .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 20px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    align-items: center;
+    gap: 6px 18px;
     font-size: 0.92rem;
     color: var(--text-soft);
   }
-  .contact a {
-    color: var(--text-soft);
+  .email-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
   }
-  .contact a:hover {
+  .email {
+    font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.86rem;
+    color: var(--text-soft);
+    overflow-wrap: anywhere;
+  }
+  .email:hover {
     color: var(--accent);
+  }
+  .copy-ic {
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .copy-ic:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .copy-ic:active {
+    transform: scale(0.88);
+  }
+  .copy-ic svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .copy-ic .i-ok {
+    display: none;
+  }
+  .copy-ic:global(.done) {
+    color: var(--ok);
+    background: var(--mint-soft);
+  }
+  .copy-ic:global(.done) .i-copy {
+    display: none;
+  }
+  .copy-ic:global(.done) .i-ok {
+    display: inline;
+  }
+  .copied {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ok);
+  }
+  .copied:empty {
+    display: none;
   }
 
   @media (max-width: 600px) {
     .hero {
       padding: 56px 0 44px;
+    }
+    .b1 {
+      width: 180px;
+      height: 180px;
+    }
+    .b2 {
+      right: 90px;
+      top: 40px;
+      width: 90px;
+      height: 90px;
+    }
+    .b3 {
+      display: none;
     }
   }
 </style>

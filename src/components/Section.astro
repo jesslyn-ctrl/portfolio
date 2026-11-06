@@ -1,16 +1,27 @@
 ---
+/**
+ * A home-page section. When it scrolls into view (site.ts adds `is-visible`), the title's letters
+ * do a little wave, a star pops in, and children marked `.stagger` animate in one after another.
+ */
 interface Props {
   id: string;
   title: string;
+  /** Small pill beside the title. */
+  badge?: string;
 }
 
-const { id, title } = Astro.props;
+const { id, title, badge } = Astro.props;
+const STAR = 'M12 0C12.6 6.5 17.5 11.4 24 12 17.5 12.6 12.6 17.5 12 24 11.4 17.5 6.5 12.6 0 12 6.5 11.4 11.4 6.5 12 0Z';
 ---
 
 <section id={id} class="section reveal" aria-labelledby={`${id}-title`}>
   <div class="wrap">
     <div class="head">
-      <h2 id={`${id}-title`} class="eyebrow">{title}</h2>
+      <svg class="sec-star" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={STAR} /></svg>
+      <h2 id={`${id}-title`} aria-label={title}>
+        {[...title].map((ch, i) => <span class="ch" aria-hidden="true" style={`--i:${i}`}>{ch}</span>)}
+      </h2>
+      {badge && <span class="badge">{badge}</span>}
       <slot name="action" />
     </div>
     <slot />
@@ -20,19 +31,29 @@ const { id, title } = Astro.props;
 <style>
   .section {
     padding: 56px 0;
-    border-top: 1px solid var(--border);
   }
   .head {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 28px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
   }
   .head h2 {
     margin: 0;
+    font-size: 1.45rem;
+    letter-spacing: -0.015em;
+  }
+  .badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
   }
   .head :global(a) {
+    margin-left: auto;
     font-size: 0.9rem;
     font-weight: 600;
     white-space: nowrap;
@@ -41,6 +62,9 @@ const { id, title } = Astro.props;
   @media (max-width: 600px) {
     .section {
       padding: 40px 0;
+    }
+    .badge {
+      display: none;
     }
   }
 </style>

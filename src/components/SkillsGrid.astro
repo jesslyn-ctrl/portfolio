@@ -1,5 +1,7 @@
 ---
+/** Toolbox: one tile per tool, its logo above its name. Tiles pop in like popcorn (see global.css). */
 import type { SkillGroup } from '../data/skills';
+import { icons } from '../data/icons';
 
 interface Props {
   groups: SkillGroup[];
@@ -8,15 +10,36 @@ interface Props {
 const { groups } = Astro.props;
 ---
 
-<div class="grid">
+<div class="groups">
   {
     groups.map((group) => (
       <div>
         <h3>{group.name}</h3>
-        <ul>
-          {group.items.map((item) => (
-            <li>{item}</li>
-          ))}
+        <ul class="tiles stagger">
+          {group.items.map((item, i) => {
+            const icon = icons[item.icon];
+            const stroked = 'stroke' in icon && icon.stroke;
+            return (
+              <li class="tile" title={item.full ?? item.name} style={`--i:${i}`}>
+                <span class="ic">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                    style={`color:${icon.color}`}
+                    fill={stroked ? 'none' : 'currentColor'}
+                    stroke={stroked ? 'currentColor' : undefined}
+                    stroke-width={stroked ? '1.8' : undefined}
+                    stroke-linecap={stroked ? 'round' : undefined}
+                    stroke-linejoin={stroked ? 'round' : undefined}
+                  >
+                    <path d={icon.d} />
+                  </svg>
+                </span>
+                <span class="nm">{item.name}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     ))
@@ -24,29 +47,77 @@ const { groups } = Astro.props;
 </div>
 
 <style>
-  .grid {
+  .groups {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
-    gap: 24px 32px;
+    gap: 26px;
   }
   h3 {
     margin: 0 0 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--text-soft);
   }
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+    gap: 10px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  li {
-    border: 1px solid var(--border);
-    padding: 4px 12px;
-    border-radius: 999px;
-    font-size: 0.85rem;
+  .tile {
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 8px;
+    padding: 14px 6px 12px;
+    border-radius: var(--radius);
+    background: var(--bg-soft);
+    border: 1px solid transparent;
+    text-align: center;
+    transition:
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 0.2s,
+      background 0.2s;
+  }
+  .tile:hover {
+    transform: translateY(-3px) rotate(-2deg);
+    border-color: var(--border);
+    background: var(--bg);
+  }
+  .tile:nth-child(even):hover {
+    transform: translateY(-3px) rotate(2deg);
+  }
+  .ic {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: var(--bg);
+    box-shadow: var(--shadow);
+  }
+  svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tile:hover svg {
+      animation: bob 0.9s ease-in-out infinite;
+    }
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(-3px) rotate(-6deg);
+    }
+  }
+  .nm {
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
   }
 </style>

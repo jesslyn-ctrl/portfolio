@@ -1,22 +1,292 @@
 ---
+/**
+ * Work history with three helpers, wired up in site.ts:
+ * - a skill highlighter: pick skills and every bullet tagged with one gets a marker sweep
+ * - a "Quick look" mode that shows two bullets per role
+ * - a career ruler drawn to scale; tap a bubble to jump to that role
+ */
 import TimelineItem from './TimelineItem.astro';
-import type { Job } from '../data/experience';
+import { type Job, currentMonth, duration, formatMonth, monthIndex } from '../data/experience';
 
 interface Props {
   jobs: Job[];
 }
 
 const { jobs } = Astro.props;
+const STAR = 'M12 0C12.6 6.5 17.5 11.4 24 12 17.5 12.6 12.6 17.5 12 24 11.4 17.5 6.5 12.6 0 12 6.5 11.4 11.4 6.5 12 0Z';
+
+// Highlighter chips, most-used first.
+const counts = new Map<string, number>();
+for (const job of jobs) for (const point of job.points) for (const tag of point.tags) counts.set(tag, (counts.get(tag) ?? 0) + 1);
+const tags = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+
+// One pastel per employer.
+const PASTELS = ['blue', 'pink', 'gold', 'mint', 'lilac'] as const;
+const orgs = [...new Set(jobs.map((job) => job.org))];
+const toneOf = (org: string) => PASTELS[orgs.indexOf(org) % PASTELS.length];
+
+// Ruler, from the first role to this month.
+const now = currentMonth();
+const first = Math.min(...jobs.map((job) => monthIndex(job.start)));
+const last = monthIndex(now) + 1;
+const pct = (i: number) => ((i - first) / (last - first)) * 100;
+const years: number[] = [];
+for (let y = Math.ceil(first / 12); y * 12 < last; y++) years.push(y);
+const industryStart = Math.min(...jobs.filter((job) => job.points.length > 0).map((job) => monthIndex(job.start)));
+const industryMonths = monthIndex(now) - industryStart + 1;
 ---
 
-<ol class="timeline">
-  {jobs.map((job) => <TimelineItem job={job} />)}
-</ol>
+<div class="tl" data-timeline>
+  <div class="hl" role="group" aria-labelledby="hl-title">
+    <div class="hl-top">
+      <span class="hl-title" id="hl-title">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d={STAR}></path></svg>
+        Highlight a skill <span class="hl-sub">· every line that uses it lights up</span>
+      </span>
+      <div class="mode" role="group" aria-label="Detail level">
+        <button type="button" data-mode="skim" aria-pressed="false">Quick look</button>
+        <button type="button" data-mode="full" aria-pressed="true">Full detail</button>
+      </div>
+    </div>
+    <div class="chips" data-chips>
+      {
+        tags.map(([tag, n]) => (
+          <button type="button" class="chip" data-tag={tag} aria-pressed="false">
+            {tag}
+            <small>{n}</small>
+          </button>
+        ))
+      }
+    </div>
+    <p class="hl-status" data-hl-status aria-live="polite"></p>
+  </div>
+
+  <div class="ruler">
+    <p class="total">{Math.floor(industryMonths / 12)} yrs {industryMonths % 12} mo in industry</p>
+    <div class="track" data-track>
+      {
+        jobs.map((job, i) => (
+          <button
+            type="button"
+            class={`seg tone-${toneOf(job.org)}`}
+            style={`left:${pct(monthIndex(job.start))}%;width:${pct(monthIndex(job.end ?? now) + 1) - pct(monthIndex(job.start))}%;--i:${i}`}
+            data-target={`role-${i}`}
+            data-label={`${job.title} · ${job.org} · ${duration(job.start, job.end, now)}`}
+            aria-label={`${job.title} at ${job.org}, ${formatMonth(job.start)} to ${formatMonth(job.end)}`}
+          >
+            {/University/.test(job.org) ? 'TU' : job.org.split(' ')[0]}
+          </button>
+        ))
+      }
+    </div>
+    <div class="ticks" aria-hidden="true">
+      {years.map((y) => <span style={`left:${pct(y * 12)}%`}>{y}</span>)}
+    </div>
+    <p class="ruler-read" data-ruler-read>Tap a bubble to jump to that role.</p>
+  </div>
+
+  <ol class="timeline stagger">
+    {jobs.map((job, i) => <TimelineItem job={job} id={`role-${i}`} tone={toneOf(job.org)} index={i} />)}
+  </ol>
+</div>
 
 <style>
+  /* highlighter bar: sticks under the site header while you read the roles */
+  .hl {
+    position: sticky;
+    top: calc(var(--header-h) - 1px);
+    z-index: 5;
+    display: grid;
+    gap: 8px;
+    margin: 0 -16px 24px;
+    padding: 12px 16px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .hl-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hl-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 0.92rem;
+  }
+  .hl-title svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--gold);
+  }
+  .hl-sub {
+    font-weight: 400;
+    color: var(--text-soft);
+  }
+  .chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 2px;
+    margin: -2px;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+  .chip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 0;
+    border-radius: 999px;
+    padding: 4px 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: 600 0.82rem/1.5 var(--font-sans);
+    cursor: pointer;
+    transition:
+      transform 0.15s,
+      background 0.15s;
+  }
+  .chip small {
+    font: 500 0.7rem ui-monospace, Menlo, monospace;
+    opacity: 0.7;
+  }
+  .chip:hover {
+    transform: translateY(-1px);
+  }
+  .chip[aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .chip[aria-pressed='true']::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  }
+  .hl-status {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+  }
+  .hl-status:empty {
+    display: none;
+  }
+  .hl-status :global(button) {
+    margin-left: 10px;
+    border: 0;
+    padding: 0;
+    background: none;
+    color: var(--accent);
+    font: 600 0.85rem var(--font-sans);
+    cursor: pointer;
+  }
+  .mode {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+  }
+  .mode button {
+    border: 0;
+    background: transparent;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font: 600 0.82rem var(--font-sans);
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+  .mode button[aria-pressed='true'] {
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: var(--shadow);
+  }
+
+  /* career ruler */
+  .total {
+    margin: 0 0 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .track {
+    position: relative;
+    height: 34px;
+  }
+  .seg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 2px var(--bg);
+    font: 700 0.72rem var(--font-sans);
+    white-space: nowrap;
+    cursor: pointer;
+    transform-origin: 0 50%;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .seg:hover,
+  .seg:focus-visible {
+    transform: translateY(-2px);
+  }
+  .seg:global(.lit) {
+    box-shadow:
+      inset 0 0 0 2px var(--bg),
+      0 0 0 2px var(--accent);
+  }
+  .ticks {
+    position: relative;
+    height: 20px;
+    margin-top: 6px;
+  }
+  .ticks span {
+    position: absolute;
+    transform: translateX(-50%);
+    font: 0.7rem ui-monospace, Menlo, monospace;
+    color: var(--text-soft);
+  }
+  .ruler-read {
+    margin: 4px 0 8px;
+    min-height: 1.5em;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+  }
+  .ruler-read :global(b) {
+    color: var(--text);
+  }
   .timeline {
-    margin: 0 0 0 4px;
+    margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  @media (max-width: 640px) {
+    .hl {
+      position: static;
+    }
+    .hl-sub {
+      display: none;
+    }
+    .seg {
+      font-size: 0;
+      padding: 0;
+    }
   }
 </style>

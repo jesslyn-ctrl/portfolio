@@ -6,7 +6,21 @@
   --border: #e6e8ec;
   --accent: #2f5fd8;
   --accent-soft: #eef2fd;
-  --radius: 10px;
+  /* sparkle trio and pastels */
+  --gold: #f2b33d;
+  --gold-soft: #fff3d6;
+  --pink: #ff8fb1;
+  --pink-soft: #ffe8ef;
+  --mint-soft: #e3f6ee;
+  --lilac-soft: #efeafd;
+  --c-green: #1c9d63;
+  --c-yellow: #e8a324;
+  --c-red: #ef4a63;
+  --ok: #1f9d5c;
+  --mark: #ffe28a;
+  --shadow: 0 1px 2px rgba(26, 29, 35, 0.04), 0 8px 24px rgba(47, 95, 216, 0.06);
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius: 14px;
   --maxw: 840px;
   --header-h: 60px;
   color-scheme: light;
@@ -21,6 +35,16 @@
     --border: #262a33;
     --accent: #8aa9ff;
     --accent-soft: #1b2440;
+    --gold-soft: #2e2715;
+    --pink-soft: #33202a;
+    --mint-soft: #16291f;
+    --lilac-soft: #231f38;
+    --c-green: #3ddc9a;
+    --c-yellow: #ffc25c;
+    --c-red: #ff7086;
+    --ok: #3ddc9a;
+    --mark: #5a4710;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
     color-scheme: dark;
   }
 }
@@ -33,6 +57,16 @@
   --border: #262a33;
   --accent: #8aa9ff;
   --accent-soft: #1b2440;
+  --gold-soft: #2e2715;
+  --pink-soft: #33202a;
+  --mint-soft: #16291f;
+  --lilac-soft: #231f38;
+  --c-green: #3ddc9a;
+  --c-yellow: #ffc25c;
+  --c-red: #ff7086;
+  --ok: #3ddc9a;
+  --mark: #5a4710;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
   color-scheme: dark;
 }
 
@@ -157,19 +191,113 @@ h3 {
   font-weight: 650;
 }
 
-/* Scroll reveal: only when scripts run and motion is welcome */
-@media (prefers-reduced-motion: no-preference) {
-  .js .reveal {
+/* Pastel tones shared by a role's ruler bubble and duration badge */
+.tone-blue { background: var(--accent-soft); color: var(--accent); }
+.tone-pink { background: var(--pink-soft); color: #d0507a; }
+.tone-gold { background: var(--gold-soft); color: #a36b00; }
+.tone-mint { background: var(--mint-soft); color: #1f8a5b; }
+.tone-lilac { background: var(--lilac-soft); color: #6b4fd0; }
+:root[data-theme='dark'] :is(.tone-pink, .tone-gold, .tone-mint, .tone-lilac) { color: var(--text); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) :is(.tone-pink, .tone-gold, .tone-mint, .tone-lilac) { color: var(--text); }
+}
+
+/* Reading progress, in the four gradient colors */
+.progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 3px;
+  z-index: 30;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--accent), var(--c-green), var(--c-yellow), var(--c-red));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* Stars left behind by the pointer in the hero */
+.trail-star {
+  position: fixed;
+  z-index: 25;
+  margin: -6px 0 0 -6px;
+  pointer-events: none;
+  animation: trail 0.9s ease-out forwards;
+}
+.trail-star svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+@keyframes trail {
+  to {
     opacity: 0;
-    transform: translateY(14px);
-    transition:
-      opacity 0.6s ease,
-      transform 0.6s ease;
+    transform: translateY(18px) scale(0.2) rotate(140deg);
   }
-  .js .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-  }
+}
+
+/* Hero lines rise in one after another */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .d1 { animation-delay: 0.02s; }
+  .d2 { animation-delay: 0.11s; }
+  .d3 { animation-delay: 0.2s; }
+  .d4 { animation-delay: 0.29s; }
+  .d5 { animation-delay: 0.38s; }
+  .d6 { animation-delay: 0.47s; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Section entrances. site.ts adds .is-visible when a section scrolls into view.
+   Before that, items rest at 30% opacity (never hidden), and `backwards` hands
+   control back to hover effects once an entrance ends. */
+.sec-star {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: var(--gold);
+  opacity: 0.5;
+  transform: scale(0.6) rotate(-30deg);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s;
+}
+.is-visible .sec-star { opacity: 1; transform: none; }
+.section h2 .ch { display: inline-block; white-space: pre; }
+.talks { overflow: hidden; }
+.talks::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(40% 120% at 50% 50%, color-mix(in srgb, var(--gold) 28%, transparent), transparent 70%);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .reveal:not(.is-visible) .stagger > *,
+  .js .reveal:not(.is-visible) .project-grid > li { opacity: 0.3; }
+  .js .reveal:not(.is-visible) .seg { opacity: 0.4; transform: scaleX(0.15); }
+  .is-visible h2 .ch { animation: wave 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) backwards; animation-delay: calc(var(--i, 0) * 35ms); }
+  .is-visible .seg { animation: grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 110ms); }
+  .is-visible .timeline.stagger > * { animation: slide-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(0.25s + var(--i, 0) * 90ms); }
+  .is-visible .project-grid > li { animation: flip-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 120ms); }
+  .is-visible .talks.stagger > * { animation: slide-right 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 120ms); }
+  .is-visible .talks::after { animation: spotlight 1.6s ease-in-out 0.2s both; }
+  .is-visible .tiles.stagger > * { animation: popcorn 0.55s cubic-bezier(0.34, 1.7, 0.6, 1) backwards; animation-delay: calc(var(--i, 0) * 28ms); }
+  .is-visible .list.stagger > * { animation: slide-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) backwards; animation-delay: calc(var(--i, 0) * 100ms); }
+}
+@keyframes wave {
+  40% { transform: translateY(-0.32em) rotate(-6deg); color: var(--accent); }
+}
+@keyframes grow { from { opacity: 0.4; transform: scaleX(0.15); } }
+@keyframes slide-up { from { opacity: 0.3; transform: translateY(22px); } }
+@keyframes slide-right { from { opacity: 0.3; transform: translateX(-28px); } }
+@keyframes flip-up { from { opacity: 0.3; transform: perspective(700px) rotateX(28deg) translateY(26px); } }
+@keyframes popcorn { from { opacity: 0.3; transform: scale(0.4) rotate(-8deg); } }
+@keyframes spotlight {
+  0% { opacity: 0; transform: translateX(-80%); }
+  25%, 75% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(80%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
