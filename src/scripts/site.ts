@@ -304,9 +304,44 @@ function updateProgress(): void {
 window.addEventListener('scroll', updateProgress, { passive: true });
 window.addEventListener('resize', updateProgress);
 
+/** Phone menu: the button toggles the nav panel. */
+function setMenu(open: boolean): void {
+  const root = document.querySelector<HTMLElement>('[data-menu-root]');
+  const button = root?.querySelector<HTMLButtonElement>('[data-menu-button]');
+  if (!root || !button) return;
+  root.toggleAttribute('data-open', open);
+  button.setAttribute('aria-expanded', String(open));
+}
+const menuOpen = () => document.querySelector('[data-menu-root]')?.hasAttribute('data-open') ?? false;
+
+function initMenu(): void {
+  const root = document.querySelector<HTMLElement>('[data-menu-root]');
+  const button = root?.querySelector<HTMLButtonElement>('[data-menu-button]');
+  if (!root || !button) return;
+  setMenu(false);
+  button.addEventListener('click', () => setMenu(!menuOpen()));
+  // Picking a link closes the panel (same-page anchors don't reload the page).
+  root.querySelectorAll('nav a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+}
+// Registered once: Esc, a tap outside the header, or growing past phone width closes the menu.
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && menuOpen()) {
+    setMenu(false);
+    document.querySelector<HTMLButtonElement>('[data-menu-button]')?.focus();
+  }
+});
+document.addEventListener('click', (event) => {
+  if (!menuOpen() || !(event.target instanceof Element)) return;
+  if (!event.target.closest('[data-menu-root]')) setMenu(false);
+});
+window.matchMedia('(min-width: 641px)').addEventListener('change', (event) => {
+  if (event.matches) setMenu(false);
+});
+
 // Fires on first load and after every view transition.
 document.addEventListener('astro:page-load', () => {
   initThemeToggle();
+  initMenu();
   initReveal();
   initSectionHighlight();
   initTagFilter();
