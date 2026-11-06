@@ -43,6 +43,7 @@ export const skills: SkillGroup[] = [
       { name: 'Microservices', icon: 'microservices' },
       { name: 'Monolith', full: 'Monolith (single deployable service)', icon: 'monolith' },
       { name: 'PBC', full: 'Packaged Business Capabilities (composable architecture)', icon: 'pbc' },
+      { name: 'Temporal', full: 'Temporal (durable workflow orchestration)', icon: 'temporal' },
     ],
   },
   {
@@ -83,12 +84,20 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
-    name: 'Frontend, Mobile & Testing',
+    name: 'Frontend & Mobile',
     items: [
       { name: 'Next.js', icon: 'nextdotjs' },
       { name: 'React Native', icon: 'react' },
       { name: 'Android', full: 'Android (Java)', icon: 'android' },
+    ],
+  },
+  {
+    name: 'Testing',
+    items: [
       { name: 'Playwright', full: 'Playwright (end-to-end test automation)', icon: 'playwright' },
+      { name: 'Selenium', full: 'Selenium (browser test automation)', icon: 'selenium' },
+      { name: 'Cucumber', full: 'Cucumber (Gherkin scenarios)', icon: 'cucumber' },
+      { name: 'BDD', full: 'Behavior-driven development', icon: 'bdd' },
     ],
   },
 ];
