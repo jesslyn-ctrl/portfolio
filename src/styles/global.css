@@ -348,6 +348,37 @@ h3 {
 .egg-close:hover {
   color: var(--text);
 }
+.egg-sound {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  color: var(--text-soft);
+  cursor: pointer;
+}
+.egg-sound:hover {
+  color: var(--text);
+}
+.egg-sound svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.egg-sound[aria-pressed='true'] .egg-sound-off,
+.egg-sound[aria-pressed='false'] .egg-sound-on {
+  display: none;
+}
 .egg-kicker {
   margin: 0;
   font-size: 0.75rem;

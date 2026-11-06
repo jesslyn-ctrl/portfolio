@@ -3,6 +3,8 @@
  * and Mochi the 3D cat pops up. three.js loads only when the egg is found.
  */
 
+import { playMeow, setSoundOn, soundOn, unlockAudio } from './meow-sound';
+
 const TAPS_NEEDED = 5;
 const TAP_WINDOW_MS = 700;
 const SECRET_WORD = 'meow';
@@ -20,6 +22,13 @@ function buildDialog(): HTMLDialogElement {
   el.setAttribute('aria-labelledby', 'egg-title');
   el.innerHTML = `
     <button class="egg-close" type="button" aria-label="Close">×</button>
+    <button class="egg-sound" type="button" aria-label="Mochi's sound" aria-pressed="true" title="Sound on/off">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+        <path class="egg-sound-on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
+        <path class="egg-sound-off" d="M16 9.5l5 5M21 9.5l-5 5" />
+      </svg>
+    </button>
     <p class="egg-kicker">You found an easter egg</p>
     <h2 id="egg-title" class="egg-title">Meet Mochi</h2>
     <div class="egg-stage">
@@ -29,6 +38,17 @@ function buildDialog(): HTMLDialogElement {
     <p class="egg-hint">Drag to spin her. Tap her for a meow.</p>
   `;
   el.querySelector('.egg-close')!.addEventListener('click', closeEgg);
+  const soundButton = el.querySelector<HTMLButtonElement>('.egg-sound')!;
+  soundButton.setAttribute('aria-pressed', String(soundOn()));
+  soundButton.addEventListener('click', () => {
+    const on = !soundOn();
+    setSoundOn(on);
+    soundButton.setAttribute('aria-pressed', String(on));
+    if (on) {
+      unlockAudio();
+      playMeow('mrrp?');
+    }
+  });
   // Clicking the backdrop (the dialog element itself, outside the card) closes it.
   el.addEventListener('click', (event) => {
     if (event.target === el) closeEgg();
@@ -53,6 +73,8 @@ function closeEgg(): void {
 
 async function openEgg(): Promise<void> {
   if (dialog?.open) return;
+  // Still inside the tap or keypress that found her, so the browser allows audio to start.
+  unlockAudio();
   dialog ??= buildDialog();
   // Page transitions swap <body>; re-attach if the dialog was dropped.
   if (!dialog.isConnected) document.body.append(dialog);
@@ -66,7 +88,9 @@ async function openEgg(): Promise<void> {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let bubbleTimer = 0;
   const meow = () => {
-    bubble.textContent = MEOWS[Math.floor(Math.random() * MEOWS.length)];
+    const text = MEOWS[Math.floor(Math.random() * MEOWS.length)];
+    bubble.textContent = text;
+    playMeow(text);
     bubble.classList.remove('is-popping');
     void bubble.offsetWidth; // restart the pop animation
     bubble.classList.add('is-popping');
