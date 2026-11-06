@@ -40,6 +40,7 @@ export const skills: SkillGroup[] = [
     items: [
       { name: 'PostgreSQL', icon: 'postgresql' },
       { name: 'MongoDB', icon: 'mongodb' },
+      { name: 'Redis', icon: 'redis' },
       { name: 'SQL Server', icon: 'database' },
       { name: 'Cloud SQL', icon: 'googlecloud' },
       { name: 'Elasticsearch', icon: 'elasticsearch' },
@@ -59,6 +60,7 @@ export const skills: SkillGroup[] = [
   {
     name: 'AI & Automation',
     items: [
+      { name: 'Claude', full: 'Claude & Claude Code', icon: 'claude' },
       { name: 'Firebase Genkit', icon: 'firebase' },
       { name: 'Gemini', icon: 'googlegemini' },
       { name: 'OpenAI', icon: 'openai' },
