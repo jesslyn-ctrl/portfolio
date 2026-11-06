@@ -8,6 +8,7 @@ export const projectIcons = {
   'code-review': { tone: 'blue', d: 'M6 3a2 2 0 1 0 0 4 2 2 0 1 0 0-4M6 17a2 2 0 1 0 0 4 2 2 0 1 0 0-4M18 17a2 2 0 1 0 0 4 2 2 0 1 0 0-4M6 7v10M18 17v-6a3 3 0 0 0-3-3h-4M13 5.5L10.5 8l2.5 2.5' },
   dashboard: { tone: 'mint', d: 'M3 4h18v16H3zM3 9h18M9 9v11M12 13h6M12 16.5h4' },
   chat: { tone: 'lilac', d: 'M4 5h16v11H9l-5 4zM8 9.5h8M8 12.5h5' },
+  ticket: { tone: 'gold', d: 'M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4zM15 7v2M15 11v2M15 15v2M9 9.5l.8 1.7 1.7.8-1.7.8-.8 1.7-.8-1.7-1.7-.8 1.7-.8z' },
   shopping: { tone: 'blue', d: 'M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2M9.5 12.5a2.5 2.5 0 0 0 5 0' },
 } as const;
 
