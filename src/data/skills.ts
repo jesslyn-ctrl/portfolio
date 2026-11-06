@@ -35,6 +35,7 @@ export const skills: SkillGroup[] = [
       { name: 'REST', icon: 'rest' },
       { name: 'Kafka', icon: 'apachekafka' },
       { name: 'RabbitMQ', icon: 'rabbitmq' },
+      { name: 'Temporal', full: 'Temporal (durable workflow orchestration)', icon: 'temporal' },
     ],
   },
   {
@@ -43,7 +44,6 @@ export const skills: SkillGroup[] = [
       { name: 'Microservices', icon: 'microservices' },
       { name: 'Monolith', full: 'Monolith (single deployable service)', icon: 'monolith' },
       { name: 'PBC', full: 'Packaged Business Capabilities (composable architecture)', icon: 'pbc' },
-      { name: 'Temporal', full: 'Temporal (durable workflow orchestration)', icon: 'temporal' },
     ],
   },
   {
@@ -89,6 +89,7 @@ export const skills: SkillGroup[] = [
       { name: 'Next.js', icon: 'nextdotjs' },
       { name: 'React Native', icon: 'react' },
       { name: 'Android', full: 'Android (Java)', icon: 'android' },
+      { name: 'Firebase', icon: 'firebase' },
     ],
   },
   {
@@ -98,6 +99,10 @@ export const skills: SkillGroup[] = [
       { name: 'Selenium', full: 'Selenium (browser test automation)', icon: 'selenium' },
       { name: 'Cucumber', full: 'Cucumber (Gherkin scenarios)', icon: 'cucumber' },
       { name: 'BDD', full: 'Behavior-driven development', icon: 'bdd' },
+      { name: 'Vitest', icon: 'vitest' },
+      { name: 'Go test', full: "go test (Go's built-in testing)", icon: 'go' },
+      { name: 'Testify', full: 'Testify (Go assertions and mocks)', icon: 'testify' },
+      { name: 'JUnit', icon: 'junit5' },
     ],
   },
 ];
