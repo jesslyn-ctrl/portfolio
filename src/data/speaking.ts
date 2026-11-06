@@ -7,11 +7,12 @@ export interface Talk {
   event: string;
   kind: string;
   role: string;
-  when: string;
+  /** Year and month, `YYYY-MM`. The list shows the latest talk first. */
+  date: string;
 }
 
 export const speaking: Talk[] = [
-  { event: 'Google DevFest Jakarta 2023', kind: 'Tech talk', role: 'Firebase speaker', when: 'Nov 2023' },
-  { event: 'Google DevFest Depok 2024', kind: 'Workshop', role: 'Firebase speaker', when: 'Nov 2024' },
-  { event: 'Google I/O Extended Cloud 2025', kind: 'Talk', role: 'Firebase speaker', when: 'Jul 2025' },
+  { event: 'Google I/O Extended Cloud 2025', kind: 'Talk', role: 'Firebase speaker', date: '2025-07' },
+  { event: 'Google DevFest Depok 2024', kind: 'Workshop', role: 'Firebase speaker', date: '2024-11' },
+  { event: 'Google DevFest Jakarta 2023', kind: 'Tech talk', role: 'Firebase speaker', date: '2023-11' },
 ];

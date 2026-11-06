@@ -1,19 +1,21 @@
 ---
 /** Talks, each with a date chip. A warm spotlight sweeps across when the section arrives. */
 import type { Talk } from '../data/speaking';
+import { formatMonth } from '../data/experience';
 
 interface Props {
   talks: Talk[];
 }
 
-const { talks } = Astro.props;
+// Latest talk first, whatever order the data file lists them in.
+const talks = [...Astro.props.talks].sort((a, b) => b.date.localeCompare(a.date));
 ---
 
 <ul class="talks stagger">
   {
     talks.map((talk, i) => (
       <li style={`--i:${i}`}>
-        <span class="d">{talk.when}</span>
+        <span class="d">{formatMonth(talk.date)}</span>
         <span class="ev">{talk.event}</span>
         <span class="k">
           {talk.kind} · {talk.role}
