@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import ProjectIcon from './ProjectIcon.astro';
 import { url } from '../lib/url';
 
 interface Props {
@@ -7,14 +8,17 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, summary, stack, visibility, period } = project.data;
+const { title, summary, stack, visibility, period, icon } = project.data;
 ---
 
 <article class="card">
-  <p class="meta">
-    <span>{period}</span>
-    {visibility === 'limited' && <span class="limited">Limited detail</span>}
-  </p>
+  <div class="top">
+    <ProjectIcon name={icon} size={46} />
+    <p class="meta">
+      <span>{period}</span>
+      {visibility === 'limited' && <span class="limited">Limited detail</span>}
+    </p>
+  </div>
   <h3><a href={url(`/projects/${project.id}/`)}>{title}</a></h3>
   <p class="summary">{summary}</p>
   <ul class="tag-row">
@@ -58,11 +62,23 @@ const { title, summary, stack, visibility, period } = project.data;
   .card:focus-within {
     border-color: var(--accent);
   }
-  .meta {
+  .top {
     display: flex;
-    justify-content: space-between;
+    align-items: flex-start;
     gap: 12px;
-    margin: 0 0 8px;
+    margin-bottom: 14px;
+  }
+  .card:hover .top :global(.pi) {
+    transform: rotate(-8deg) scale(1.08);
+  }
+  .meta {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px 8px;
+    margin: 0;
     font-size: 0.8rem;
     color: var(--text-soft);
   }

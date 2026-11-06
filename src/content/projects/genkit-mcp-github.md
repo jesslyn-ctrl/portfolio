@@ -7,6 +7,7 @@ stack: [Firebase Genkit, Next.js, TypeScript, Gemini, MCP, Firebase]
 visibility: public
 featured: true
 order: 1
+icon: code-review
 ---
 
 ## Overview

@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { projectIconNames } from './data/project-icons';
 
 const projects = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/projects' }),
@@ -15,6 +16,8 @@ const projects = defineCollection({
       repo: z.url().optional(),
       featured: z.boolean().default(false),
       order: z.number(),
+      /** Pastel line icon shown on the card and case study (see src/data/project-icons.ts). */
+      icon: z.enum(projectIconNames),
     })
     // Limited projects are confidential: never link their source.
     .refine((data) => !(data.visibility === 'limited' && data.repo), {

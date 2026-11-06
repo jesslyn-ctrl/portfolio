@@ -1,0 +1,38 @@
+---
+/** A project's pastel icon tile. Decorative: the project title next to it carries the meaning. */
+import { projectIcons, type ProjectIconName } from '../data/project-icons';
+
+interface Props {
+  name: ProjectIconName;
+  /** Tile size in px. */
+  size?: number;
+}
+
+const { name, size = 48 } = Astro.props;
+const icon = projectIcons[name];
+---
+
+<span class={`pi tone-${icon.tone}`} style={`--s:${size}px`} aria-hidden="true">
+  <svg viewBox="0 0 24 24" focusable="false"><path d={icon.d}></path></svg>
+</span>
+
+<style>
+  .pi {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: var(--s);
+    height: var(--s);
+    border-radius: calc(var(--s) * 0.3);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  svg {
+    width: 56%;
+    height: 56%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>

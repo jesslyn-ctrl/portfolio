@@ -1,5 +1,5 @@
 ---
-title: Bonbon
+title: Bill Splitter
 summary: A cross-platform bill-splitting app. Snap a restaurant receipt, let Gemini read every line, tap who had what, and send everyone their share as an image.
 role: Design and development
 period: '2026'
@@ -7,11 +7,12 @@ stack: [React Native, Expo, TypeScript, Gemini, Zustand, EAS]
 visibility: public
 featured: true
 order: 0
+icon: receipt
 ---
 
 ## Overview
 
-In Indonesia you ask the waiter for the *bon*, the bill. Bonbon turns that bill into fair shares. Photograph the receipt and the app reads every item, the tax, the service charge, and any discount. Friends appear as pastel pebbles: tap a person, then tap what they had. Shared dishes split evenly, extras are spread in proportion to what each person ordered, and the result goes to the group chat as a receipt-styled image.
+In Indonesia you ask the waiter for the *bon*, the bill. This app turns that bill into fair shares. Photograph the receipt and the app reads every item, the tax, the service charge, and any discount. Friends appear as pastel pebbles: tap a person, then tap what they had. Shared dishes split evenly, extras are spread in proportion to what each person ordered, and the result goes to the group chat as a receipt-styled image.
 
 One codebase runs on Android and iOS, with an installable Android build from EAS.
 

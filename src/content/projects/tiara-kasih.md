@@ -1,5 +1,5 @@
 ---
-title: TiKACore
+title: Tiara Kasih
 summary: An administrative back-office platform, built end to end as a Go GraphQL service, a React dashboard, and a user manual.
 role: Backend and frontend development
 period: 2025 – Present
@@ -7,11 +7,12 @@ stack: [Go, GraphQL, PostgreSQL, React, TypeScript, Tailwind CSS]
 visibility: limited
 featured: true
 order: 3
+icon: dashboard
 ---
 
 ## Overview
 
-TiKACore is the administrative core system for an organisation: the place staff go to manage day-to-day records, in one system with a single source of truth.
+This is the administrative core system for Tiara Kasih: the place staff go to manage day-to-day records, in one system with a single source of truth.
 
 ## My role
 
