@@ -14,5 +14,6 @@ export interface Talk {
 export const speaking: Talk[] = [
   { event: 'Google I/O Extended Cloud 2025', kind: 'Talk', role: 'Firebase speaker', date: '2025-07' },
   { event: 'Google DevFest Depok 2024', kind: 'Workshop', role: 'Firebase speaker', date: '2024-11' },
+  { event: "Women Techmakers International Women's Day (IWD) Depok 2024", kind: 'Panel discussion', role: 'Panelist', date: '2024-04' },
   { event: 'Google DevFest Jakarta 2023', kind: 'Tech talk', role: 'Firebase speaker', date: '2023-11' },
 ];
