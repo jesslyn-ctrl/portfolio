@@ -42,6 +42,7 @@ export const icons = {
   grpc: { d: "M4 8h15l-3.5-3.5M20 16H5l3.5 3.5", color: "var(--accent)", stroke: true },
   database: { d: "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3", color: "var(--accent)", stroke: true },
   mcp: { d: "M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4", color: "var(--accent)", stroke: true },
+  playwright: { d: "M3 6c3-1.5 6-1.5 9 0v5c0 3.5-2 6-4.5 6S3 14.5 3 11zM12 9c3-1.5 6-1.5 9 0v5c0 3.5-2 6-4.5 6S12 17.5 12 14zM5.5 9.5H7M8.5 9.5H10M6 13c.8.8 2.2.8 3 0M14.5 12.5H16M17.5 12.5H19M15 17c.8-.8 2.2-.8 3 0", color: "#2EAD33", stroke: true },
   microservices: { d: "M10 5a2 2 0 1 0 4 0 2 2 0 1 0-4 0M3 18a2 2 0 1 0 4 0 2 2 0 1 0-4 0M17 18a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 7v4M12 11l-6 5.2M12 11l6 5.2", color: "var(--accent)", stroke: true },
 } satisfies Record<string, Icon>;
 

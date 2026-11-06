@@ -71,11 +71,12 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
-    name: 'Frontend & Mobile',
+    name: 'Frontend, Mobile & Testing',
     items: [
       { name: 'Next.js', icon: 'nextdotjs' },
       { name: 'React Native', icon: 'react' },
       { name: 'Android', full: 'Android (Java)', icon: 'android' },
+      { name: 'Playwright', full: 'Playwright (end-to-end test automation)', icon: 'playwright' },
     ],
   },
 ];
