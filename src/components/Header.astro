@@ -1,4 +1,8 @@
 ---
+/**
+ * Site header. Desktop: inline links. Phones (≤640px): a menu button opens a dropdown panel
+ * with large tap targets (wired up in site.ts: initMenu).
+ */
 import SparkleName from './SparkleName.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import { profile } from '../data/profile';
@@ -7,27 +11,28 @@ import { url } from '../lib/url';
 const onProjects = Astro.url.pathname.startsWith(url('/projects/'));
 
 const links = [
-  { label: 'Projects', href: url('/projects/'), section: 'projects' },
-  { label: 'Experience', href: url('/#experience'), section: 'experience' },
-  { label: 'Skills', href: url('/#skills'), section: 'skills' },
-  { label: 'Speaking', href: url('/#speaking'), section: 'speaking' },
-  { label: 'Contact', href: url('/#contact'), section: 'contact' },
+  { label: 'Projects', href: url('/projects/'), section: 'projects', tone: 'blue' },
+  { label: 'Experience', href: url('/#experience'), section: 'experience', tone: 'pink' },
+  { label: 'Skills', href: url('/#skills'), section: 'skills', tone: 'gold' },
+  { label: 'Speaking', href: url('/#speaking'), section: 'speaking', tone: 'mint' },
+  { label: 'Contact', href: url('/#contact'), section: 'contact', tone: 'lilac' },
 ];
 ---
 
-<header class="site-header">
+<header class="site-header" data-menu-root>
   <div class="wrap bar">
     <a class="brand" href={url('/')}><SparkleName text={profile.name} /></a>
-    <nav aria-label="Main">
+    <nav id="site-nav" aria-label="Main">
       <ul>
         {
-          links.map((link) => (
-            <li>
+          links.map((link, i) => (
+            <li style={`--i:${i}`}>
               <a
                 href={link.href}
                 data-section={link.section}
                 aria-current={link.section === 'projects' && onProjects ? 'page' : undefined}
               >
+                <span class={`dot tone-${link.tone}`} aria-hidden="true" />
                 {link.label}
               </a>
             </li>
@@ -36,6 +41,10 @@ const links = [
       </ul>
     </nav>
     <ThemeToggle />
+    <button class="menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" data-menu-button>
+      <span class="sr-only">Menu</span>
+      <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
   </div>
 </header>
 
@@ -72,7 +81,9 @@ const links = [
     list-style: none;
   }
   nav a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 6px 10px;
     border-radius: 6px;
     font-size: 0.9rem;
@@ -87,26 +98,148 @@ const links = [
     color: var(--accent);
     background: var(--accent-soft);
   }
+  .dot {
+    display: none;
+  }
+  .menu-btn {
+    display: none;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 
+  /* ---------- phones: menu button + dropdown panel ---------- */
   @media (max-width: 640px) {
     .bar {
-      flex-wrap: wrap;
-      gap: 0 12px;
-      padding-top: 8px;
+      gap: 8px;
     }
     .brand {
       margin-right: auto;
     }
-    nav {
-      order: 3;
+    .menu-btn {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .bars {
+      position: relative;
+      width: 16px;
+      height: 12px;
+    }
+    .bars span {
+      position: absolute;
+      left: 0;
       width: 100%;
-      margin: 4px -10px 6px;
-      overflow-x: auto;
-      scrollbar-width: none;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transition:
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.2s,
+        top 0.3s;
+    }
+    .bars span:nth-child(1) {
+      top: 0;
+    }
+    .bars span:nth-child(2) {
+      top: 5px;
+    }
+    .bars span:nth-child(3) {
+      top: 10px;
+    }
+    .menu-btn[aria-expanded='true'] .bars span:nth-child(1) {
+      top: 5px;
+      transform: rotate(45deg);
+    }
+    .menu-btn[aria-expanded='true'] .bars span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-btn[aria-expanded='true'] .bars span:nth-child(3) {
+      top: 5px;
+      transform: rotate(-45deg);
+    }
+
+    nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin: 0;
+      padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      border-radius: 0 0 22px 22px;
+      box-shadow: 0 18px 40px rgba(15, 17, 21, 0.12);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition:
+        opacity 0.2s ease,
+        transform 0.25s ease,
+        visibility 0s linear 0.25s;
+    }
+    .site-header[data-open] nav {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.2s ease,
+        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    ul {
+      flex-direction: column;
+      gap: 2px;
     }
     nav a {
-      font-size: 0.82rem;
-      padding: 6px 7px;
+      padding: 13px 12px;
+      border-radius: 14px;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    nav a:active {
+      background: var(--bg-soft);
+    }
+    .dot {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      /* The tone class supplies the color; use it at full strength. */
+      background: currentColor;
+    }
+    nav li {
+      opacity: 0;
+      transform: translateX(-10px);
+      transition:
+        opacity 0.2s,
+        transform 0.2s;
+    }
+    .site-header[data-open] nav li {
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.3s ease calc(var(--i) * 45ms),
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i) * 45ms);
+    }
+  }
+  @media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+    nav,
+    nav li,
+    .bars span {
+      transition: none !important;
     }
   }
 </style>

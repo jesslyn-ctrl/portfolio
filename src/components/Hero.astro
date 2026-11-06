@@ -2,6 +2,9 @@
 import SparkleName from './SparkleName.astro';
 import { profile } from '../data/profile';
 import { url } from '../lib/url';
+
+// Keep each phrase of the role together so narrow screens only break between phrases.
+const roleParts = profile.role.split(' · ');
 ---
 
 <section class="hero" data-sparkle-trail>
@@ -9,7 +12,9 @@ import { url } from '../lib/url';
   <div class="wrap">
     <p class="eyebrow rise d1">Portfolio &amp; Resume</p>
     <h1 class="rise d2"><SparkleName text={profile.name} gradient /></h1>
-    <p class="role rise d3">{profile.role}</p>
+    <p class="role rise d3">
+      {roleParts.map((part, i) => i < roleParts.length - 1 ? <><span class="part">{part} ·</span>{' '}</> : <span class="part">{part}</span>)}
+    </p>
     <p class="summary rise d4">{profile.summary}</p>
     <div class="actions rise d5">
       <a class="button primary" href={url('/projects/')}>View projects</a>
@@ -100,6 +105,9 @@ import { url } from '../lib/url';
     color: var(--text-soft);
     margin: 0 0 20px;
     text-wrap: balance;
+  }
+  .part {
+    white-space: nowrap;
   }
   .summary {
     max-width: 640px;

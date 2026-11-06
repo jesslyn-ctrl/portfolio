@@ -41,6 +41,24 @@ const { tags } = Astro.props;
     border-color: var(--accent);
     color: var(--bg);
   }
+  /* Phones: one swipeable row instead of a wall of chips above the projects. */
+  @media (max-width: 640px) {
+    .filter {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      margin: 0 -16px 24px;
+      padding: 2px 16px;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 24px), transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 24px), transparent);
+    }
+    .filter::-webkit-scrollbar {
+      display: none;
+    }
+    button {
+      flex: none;
+    }
+  }
   .empty {
     position: absolute;
     width: 1px;
