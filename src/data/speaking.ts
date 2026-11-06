@@ -12,7 +12,7 @@ export interface Talk {
 }
 
 export const speaking: Talk[] = [
-  { event: 'Amartha Workshop 2025', kind: 'Workshop', role: 'Speaker', date: '2025-12' },
+  { event: 'Amartha Workshop 2025', kind: 'AI workshop', role: 'Speaker', date: '2025-12' },
   { event: 'Google I/O Extended Cloud 2025', kind: 'Talk', role: 'Firebase speaker', date: '2025-07' },
   { event: 'Google DevFest Depok 2024', kind: 'Workshop', role: 'Firebase speaker', date: '2024-11' },
   { event: "Women Techmakers International Women's Day (IWD) Depok 2024", kind: 'Panel discussion', role: 'Panelist', date: '2024-04' },
