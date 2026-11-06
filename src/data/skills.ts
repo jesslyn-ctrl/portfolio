@@ -61,6 +61,8 @@ export const skills: SkillGroup[] = [
     name: 'AI & Automation',
     items: [
       { name: 'Claude', full: 'Claude & Claude Code', icon: 'claude' },
+      { name: 'Pi', full: 'Pi coding agent', icon: 'pi' },
+      { name: 'Perplexity', icon: 'perplexity' },
       { name: 'Firebase Genkit', icon: 'firebase' },
       { name: 'Gemini', icon: 'googlegemini' },
       { name: 'OpenAI', icon: 'openai' },
