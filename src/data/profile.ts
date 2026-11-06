@@ -9,7 +9,7 @@ export const profile = {
   title: 'Backend Engineer',
   role: 'Backend Engineer — Scalable Systems · Cloud Infrastructure · AI-Powered Automation',
   summary:
-    'Backend Engineer with a passion for building scalable and efficient systems. I enjoy exploring all aspects of backend development, from architecture to performance optimization. Interested in Machine Learning and Generative AI, always eager to learn and experiment. Enthusiastic about creating reliable and well-structured solutions.',
+    'Backend engineer with five years of experience building services in Go and Java Spring Boot. I build AI-powered internal tools, workflow automation and Terraform-managed infrastructure on Google Cloud, and I work across the whole path from system design to deployment, observability and performance tuning. I also speak about Firebase at Google developer events and enjoy turning generative AI into tools people use every day.',
   description:
     'Jesslyn — Backend Engineer specializing in scalable systems, cloud infrastructure, and AI-powered automation.',
   location: 'West Jakarta, Indonesia',

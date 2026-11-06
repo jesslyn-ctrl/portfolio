@@ -5,14 +5,16 @@
  */
 interface Props {
   text: string;
+  /** Paint the text with the four-color gradient (the big hero name). */
+  gradient?: boolean;
 }
 
-const { text } = Astro.props;
+const { text, gradient = false } = Astro.props;
 const STAR = 'M12 0C12.6 6.5 17.5 11.4 24 12 17.5 12.6 12.6 17.5 12 24 11.4 17.5 6.5 12.6 0 12 6.5 11.4 11.4 6.5 12 0Z';
 ---
 
 <span class="sparkle-name">
-  {text}
+  {gradient ? <span class="grad">{text}</span> : text}
   <span class="sparkles" aria-hidden="true">
     {
       [1, 2, 3, 4].map((n) => (
@@ -37,6 +39,25 @@ const STAR = 'M12 0C12.6 6.5 17.5 11.4 24 12 17.5 12.6 12.6 17.5 12 24 11.4 17.5
     position: absolute;
     inset: 0;
     pointer-events: none;
+  }
+
+  .grad {
+    background: linear-gradient(100deg, var(--accent) 0%, var(--c-green) 38%, var(--c-yellow) 68%, var(--c-red) 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .grad {
+      animation: hue 8s ease-in-out infinite alternate;
+    }
+  }
+  @keyframes hue {
+    to {
+      background-position: 100% 0;
+    }
   }
 
   .star {

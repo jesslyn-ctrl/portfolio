@@ -7,6 +7,7 @@ stack: [Java / Spring Boot, Go, gRPC, Kafka, Google Cloud, Kubernetes]
 visibility: limited
 featured: true
 order: 5
+icon: shopping
 ---
 
 ## Overview

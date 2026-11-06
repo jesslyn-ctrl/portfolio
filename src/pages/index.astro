@@ -6,6 +6,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import Timeline from '../components/Timeline.astro';
 import SkillsGrid from '../components/SkillsGrid.astro';
 import SimpleList from '../components/SimpleList.astro';
+import TalkList from '../components/TalkList.astro';
 import { profile } from '../data/profile';
 import { experience } from '../data/experience';
 import { skills } from '../data/skills';
@@ -36,8 +37,8 @@ const jsonLd = {
     <a slot="action" href={url('/projects/')}>All projects →</a>
     <ul class="project-grid">
       {
-        featured.map((project) => (
-          <li>
+        featured.map((project, i) => (
+          <li style={`--i:${i}`}>
             <ProjectCard project={project} />
           </li>
         ))
@@ -49,12 +50,12 @@ const jsonLd = {
     <Timeline jobs={experience} />
   </Section>
 
-  <Section id="skills" title="Skills">
+  <Section id="skills" title="Skills" badge="what I work with">
     <SkillsGrid groups={skills} />
   </Section>
 
-  <Section id="speaking" title="Speaking Engagements">
-    <SimpleList entries={speaking} />
+  <Section id="speaking" title="Speaking Engagements" badge="speaker & panelist">
+    <TalkList talks={speaking} />
   </Section>
 
   <Section id="education" title="Education & Community">

@@ -1,72 +1,158 @@
 ---
-import type { Job } from '../data/experience';
+import { type Job, duration, formatMonth } from '../data/experience';
 
 interface Props {
   job: Job;
+  id: string;
+  /** Pastel tone shared with this employer's ruler bubble. */
+  tone: string;
+  index: number;
 }
 
-const { job } = Astro.props;
+const { job, id, tone, index } = Astro.props;
 ---
 
-<li class="item">
-  <div class="head">
-    <h3>{job.title}</h3>
-    <span class="period">{job.period}</span>
+<li class="item" id={id} style={`--i:${index}`} data-job>
+  <div class="when">
+    {formatMonth(job.start)} – {formatMonth(job.end)}<br />
+    <span class={`dur tone-${tone}`} data-start={job.start} data-end={job.end ?? ''}>{duration(job.start, job.end)}</span>
   </div>
-  <p class="org">{job.org}</p>
-  {job.points.length > 0 && <ul>{job.points.map((point) => <li>{point}</li>)}</ul>}
+  <div class="body">
+    <h3>{job.title}</h3>
+    <p class="org"><b>{job.org}</b> · {job.place}</p>
+    {
+      job.points.length > 0 && (
+        <ul class="pts">
+          {job.points.map((point) => (
+            <li data-tags={point.tags.join('|')}>
+              <span class="txt">{point.text}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {job.points.length > 2 && <button type="button" class="more" data-more hidden></button>}
+  </div>
 </li>
 
 <style>
   .item {
     position: relative;
-    padding: 0 0 36px 28px;
-    border-left: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 24px;
+    padding: 22px 0;
+    scroll-margin-top: calc(var(--header-h) + 150px);
   }
-  .item:last-child {
-    padding-bottom: 0;
+  .item + .item {
+    border-top: 1px solid var(--border);
   }
-  .item::before {
+  .item:global(.flash)::after {
     content: '';
     position: absolute;
-    left: -5px;
-    top: 7px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2px solid var(--accent);
+    inset: 6px -14px;
+    z-index: -1;
+    border-radius: var(--radius);
+    background: var(--gold-soft);
+    animation: fade 1.6s ease forwards;
   }
-  .head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 2px 16px;
+  @keyframes fade {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  .when {
+    padding-top: 3px;
+    font: 0.78rem/1.6 ui-monospace, 'SF Mono', Menlo, monospace;
+    color: var(--text-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .dur {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    font: 600 0.72rem -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
   h3 {
     margin: 0;
-    font-size: 1.05rem;
-  }
-  .period {
-    color: var(--text-soft);
-    font-size: 0.88rem;
-    white-space: nowrap;
+    font-size: 1.1rem;
   }
   .org {
-    margin: 2px 0 12px;
+    margin: 2px 0 10px;
     color: var(--text-soft);
-    font-size: 0.95rem;
+    font-size: 0.94rem;
   }
-  ul {
+  .org b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .pts {
+    display: grid;
+    gap: 6px;
     margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pts li {
+    position: relative;
     padding-left: 18px;
-  }
-  ul li {
-    margin-bottom: 6px;
     font-size: 0.95rem;
+    transition: opacity 0.25s;
   }
-  ul li:last-child {
-    margin-bottom: 0;
+  .pts li::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .txt {
+    background-image: linear-gradient(var(--mark), var(--mark));
+    background-repeat: no-repeat;
+    background-size: 0% 46%;
+    background-position: 0 88%;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    border-radius: 3px;
+    transition: background-size 0.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+  }
+  .pts li:global(.hit) .txt {
+    background-size: 100% 46%;
+  }
+  .pts li:global(.hit)::before {
+    background: var(--gold);
+  }
+  :global(.filtering) .pts li:not(:global(.hit)) {
+    opacity: 0.4;
+  }
+  .pts li:global(.hide) {
+    display: none;
+  }
+  .more {
+    margin-top: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: 600 0.88rem var(--font-sans);
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .item {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 4px;
+    }
+    .dur {
+      margin: 0 0 0 8px;
+    }
   }
 </style>

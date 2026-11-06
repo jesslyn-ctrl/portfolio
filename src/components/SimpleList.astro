@@ -8,10 +8,10 @@ interface Props {
 const { entries } = Astro.props;
 ---
 
-<ul class="list">
+<ul class="list stagger">
   {
-    entries.map((entry) => (
-      <li>
+    entries.map((entry, i) => (
+      <li style={`--i:${i}`}>
         <span>{entry.text}</span>
         {entry.when && <span class="when">{entry.when}</span>}
       </li>

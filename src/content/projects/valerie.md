@@ -7,6 +7,7 @@ stack: [Go, gRPC, GraphQL, MongoDB, Redis, Next.js]
 visibility: limited
 featured: false
 order: 4
+icon: chat
 ---
 
 ## Overview

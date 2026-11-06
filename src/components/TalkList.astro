@@ -1,0 +1,73 @@
+---
+/** Talks, each with a date chip. A warm spotlight sweeps across when the section arrives. */
+import type { Talk } from '../data/speaking';
+import { formatMonth } from '../data/experience';
+
+interface Props {
+  talks: Talk[];
+}
+
+// Latest talk first, whatever order the data file lists them in.
+const talks = [...Astro.props.talks].sort((a, b) => b.date.localeCompare(a.date));
+---
+
+<ul class="talks stagger">
+  {
+    talks.map((talk, i) => (
+      <li style={`--i:${i}`}>
+        <span class="d">{formatMonth(talk.date)}</span>
+        <span class="ev">{talk.event}</span>
+        <span class="k">
+          {talk.kind} · {talk.role}
+        </span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .talks {
+    position: relative;
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-radius: var(--radius);
+  }
+  li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    background: var(--bg-soft);
+  }
+  .d {
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    font: 600 0.75rem ui-monospace, 'SF Mono', Menlo, monospace;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .ev {
+    font-weight: 600;
+  }
+  .k {
+    font-size: 0.82rem;
+    color: var(--text-soft);
+  }
+
+  @media (max-width: 600px) {
+    li {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+    .k {
+      grid-column: 2;
+      margin-top: -10px;
+    }
+  }
+</style>

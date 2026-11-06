@@ -1,80 +1,122 @@
+/** A resume bullet. `tags` drive the skill highlighter on the home page. */
+export interface Point {
+  text: string;
+  tags: string[];
+}
+
 export interface Job {
   title: string;
   org: string;
-  period: string;
-  points: string[];
+  place: string;
+  /** Year and month, `YYYY-MM`. */
+  start: string;
+  /** `YYYY-MM`, or null for the current role. */
+  end: string | null;
+  points: Point[];
 }
 
 export const experience: Job[] = [
   {
     title: 'Software Engineer',
-    org: 'DoiT International, CA · Remote',
-    period: 'Mar 2026 – Present',
+    org: 'DoiT International',
+    place: 'Remote',
+    start: '2026-03',
+    end: null,
     points: [
-      'Led system design and architecture discussions for new services, ensuring scalability, maintainability, and alignment with business needs.',
-      'Built internal AI-powered tools and automation platforms to improve operational efficiency across Support, Finance, and Engineering.',
-      'Designed workflow automations using Zapier and n8n, integrating Zendesk, Jira, Slack, Google Workspace, and internal APIs to eliminate repetitive tasks.',
-      'Developed intelligent ticket routing systems in Zendesk, reducing manual triage and improving assignment accuracy.',
-      'Implemented Finance support automation, including skill-based routing, escalation workflows, SLA management, and reporting.',
-      'Built backend services in Go (Golang) and deployed cloud-native applications on Google Cloud Platform.',
-      'Provisioned and managed GCP infrastructure using Terraform (Cloud Run, API Gateway, Load Balancer, IAM, Artifact Registry, Cloud Build/WIF).',
-      'Created CI/CD pipelines with GitHub Actions for automated testing and deployments.',
-      'Integrated systems via APIs and event-driven architectures to streamline cross-team workflows.',
-      'Optimized Zendesk workflows through custom triggers, macros, views, and automation rules.',
-      'Leveraged AI-assisted development tools (Claude Code, Gemini, Antigravity) to accelerate engineering productivity.',
+      { text: 'Build internal AI-powered tools and automation platforms that remove repetitive work for Support, Finance and Engineering teams.', tags: ['AI', 'Automation'] },
+      { text: 'Lead system design for new services, from architecture proposals through scalability and maintainability reviews.', tags: ['System design', 'Leadership'] },
+      { text: 'Develop backend services in Go and run them on Cloud Run behind API Gateway and a load balancer.', tags: ['Go', 'GCP'] },
+      { text: 'Manage GCP infrastructure as code with Terraform (Cloud Run, API Gateway, Load Balancing, IAM, Artifact Registry, Cloud Build, Workload Identity Federation), deployed through GitHub Actions pipelines.', tags: ['Terraform', 'GCP', 'CI/CD'] },
+      { text: 'Designed Zendesk ticket routing and Finance support automation, covering skill-based assignment, escalations, SLA tracking and reporting, which cut manual triage.', tags: ['Automation'] },
+      { text: 'Connect Zendesk, Jira, Slack, Google Workspace and internal APIs through Zapier, n8n and event-driven integrations.', tags: ['Automation'] },
+      { text: 'Use AI-assisted development (Claude Code, Gemini, Antigravity) in day-to-day engineering.', tags: ['AI'] },
     ],
   },
   {
     title: 'Senior Backend Engineer',
-    org: 'SG-EDTS, Jakarta',
-    period: 'Jan 2025 – Mar 2026',
+    org: 'SG-EDTS',
+    place: 'Jakarta',
+    start: '2025-01',
+    end: '2026-03',
     points: [
-      'Led system design and architecture discussions for new services, ensuring scalability, maintainability, and alignment with business needs.',
-      'Conducted code reviews and provided mentorship for Java Spring Boot and Golang projects, improving code quality and team productivity.',
-      'Optimized backend service performance by improving database queries, caching strategies, and API response times.',
-      'Drove best practices in microservices design, CI/CD pipelines, testing strategy, and observability.',
+      { text: 'Led system design and architecture reviews for new microservices, balancing scalability, maintainability and business needs.', tags: ['System design', 'Leadership'] },
+      { text: 'Reviewed code and mentored engineers on Java Spring Boot and Go projects.', tags: ['Leadership', 'Java', 'Go'] },
+      { text: 'Improved API response times by tuning database queries and caching strategies.', tags: ['Databases'] },
+      { text: 'Set team practices for microservice design, CI/CD, testing strategy and observability.', tags: ['CI/CD', 'System design'] },
     ],
   },
   {
     title: 'Backend Engineer',
-    org: 'SG-EDTS, Jakarta',
-    period: 'Aug 2023 – Dec 2024',
+    org: 'SG-EDTS',
+    place: 'Jakarta',
+    start: '2023-08',
+    end: '2024-12',
     points: [
-      'Proficient in Java Spring Boot and Golang, with hands-on experience building scalable backend services and APIs, including gRPC-based microservices.',
-      'Contributed to e-Budgeting (insurance) and Indomaret (retail) projects, designing and maintaining microservices architecture for high availability and performance.',
-      'Implemented Kafka for reliable real-time data exchange and decoupled service communication.',
-      'Experienced with Google Cloud Platform (Cloud SQL, GKE), Docker (multi-stage builds), and Kubernetes for cloud-native deployments.',
-      'Involved in system design, project structuring, technical documentation, and establishing scalability/maintainability best practices.',
-      'Researched and implemented GenAI solutions (Google Gemini, OpenAI GPT, Ollama) in internal projects, enhancing workflows and exploring AI-powered automation.',
+      { text: 'Built and maintained Java Spring Boot and Go microservices, including gRPC services, for e-Budgeting (insurance) and Klik Indomaret (retail) clients.', tags: ['Java', 'Go', 'gRPC'] },
+      { text: 'Implemented Kafka messaging for real-time data exchange and decoupled communication between services.', tags: ['Kafka'] },
+      { text: 'Deployed services on Google Cloud (GKE, Cloud SQL) using multi-stage Docker builds and Kubernetes.', tags: ['GCP', 'Kubernetes'] },
+      { text: 'Contributed to system design, project structure and technical documentation for new services.', tags: ['System design'] },
+      { text: 'Researched and prototyped generative AI features with Google Gemini, OpenAI GPT and Ollama for internal projects.', tags: ['AI'] },
     ],
   },
   {
     title: 'Backend Engineer',
-    org: 'Gramedia, Jakarta',
-    period: 'Jul 2022 – Jul 2023',
+    org: 'Gramedia',
+    place: 'Jakarta',
+    start: '2022-07',
+    end: '2023-07',
     points: [
-      'Built and integrated backend APIs using Python (Django) and Express.js/Nuxt with PostgreSQL, MongoDB, RabbitMQ, Elastic APM, and Firebase, ensuring scalable and reliable systems.',
-      'Conducted vendor and category data mapping to ensure accurate and consistent data across systems.',
-      'Worked with AWS, Docker, Elastic Search, Git, and CI/CD pipelines for cloud-native deployments.',
-      'Led a 4-member team to deliver critical projects, including the Billing System B2B and Gramedia Affiliate System for Gramedia.com.',
-      'Engaged in system design, technical decision-making, code reviews, and adherence to best practices.',
+      { text: 'Led a team of four to deliver the B2B Billing System and the Gramedia Affiliate System for Gramedia.com.', tags: ['Leadership'] },
+      { text: 'Built backend APIs and integrations with Python (Django), Express.js and Nuxt on PostgreSQL, MongoDB, RabbitMQ and Firebase, monitored with Elastic APM.', tags: ['Python', 'TypeScript', 'Databases'] },
+      { text: 'Mapped vendor and category data so catalog records stayed consistent across systems.', tags: ['Databases'] },
+      { text: 'Shipped on AWS with Docker, Elasticsearch and CI/CD pipelines, and took part in system design and code reviews.', tags: ['AWS', 'CI/CD', 'System design'] },
     ],
   },
   {
     title: 'Mobile Android & Full-stack Web Developer',
-    org: 'AdIns, Jakarta',
-    period: 'Mar 2021 – Jul 2022',
+    org: 'AdIns',
+    place: 'Jakarta',
+    start: '2021-03',
+    end: '2022-07',
     points: [
-      'Analyzed system loads and resolved production issues across multiple finance-industry clients (BCA Finance, Toyota Astra Finance, Wuling Finance, WOM Finance).',
-      'Developed and maintained Java Spring Boot backends and JSP-based web applications, handling bug fixes and production enhancements.',
-      'Built and fixed mobile applications using Java (Android Studio), integrating Firebase Crashlytics & APM for monitoring.',
-      'Managed SQL Server for data operations, with deployment experience on Apache, Wildfly, and remote client servers.',
+      { text: 'Resolved production issues and performance bottlenecks for multi-finance clients including BCA Finance, Toyota Astra Finance, Wuling Finance and WOM Finance.', tags: [] },
+      { text: 'Maintained Java Spring Boot backends and JSP web applications.', tags: ['Java'] },
+      { text: 'Built and fixed Android apps in Java, adding Firebase Crashlytics and Performance Monitoring.', tags: ['Java', 'Mobile'] },
+      { text: 'Ran SQL Server data operations and deployed to Apache, WildFly and client servers.', tags: ['Databases'] },
     ],
   },
   {
     title: 'Computation & NLP Assistant Lecturer',
-    org: 'Tarumanagara University, Jakarta',
-    period: 'Jun 2020 – Dec 2020',
+    org: 'Tarumanagara University',
+    place: 'Jakarta',
+    start: '2020-06',
+    end: '2020-12',
     points: [],
   },
 ];
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/** `2026-03` → `Mar 2026`; null → `Present`. */
+export function formatMonth(ym: string | null): string {
+  if (!ym) return 'Present';
+  return `${MONTHS[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
+}
+
+/** Months since year zero, for to-scale layout. */
+export function monthIndex(ym: string): number {
+  return Number(ym.slice(0, 4)) * 12 + Number(ym.slice(5, 7)) - 1;
+}
+
+/** `YYYY-MM` for the given date (defaults to today). */
+export function currentMonth(date = new Date()): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/** Inclusive length of a role, such as `1 yr 2 mo`. */
+export function duration(start: string, end: string | null, now = currentMonth()): string {
+  const months = monthIndex(end ?? now) - monthIndex(start) + 1;
+  const years = Math.floor(months / 12);
+  const rest = months % 12;
+  return [years ? `${years} yr${years > 1 ? 's' : ''}` : '', rest ? `${rest} mo` : ''].filter(Boolean).join(' ');
+}

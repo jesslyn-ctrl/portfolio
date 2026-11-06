@@ -7,6 +7,7 @@ stack: [Go, GraphQL, PostgreSQL, Next.js, TypeScript, Docker]
 visibility: public
 featured: true
 order: 2
+icon: coffee
 ---
 
 ## Overview
