@@ -15,18 +15,21 @@ export interface SkillGroup {
 
 export const skills: SkillGroup[] = [
   {
-    name: 'Languages',
+    name: 'Languages & Runtimes',
     items: [
       { name: 'Go', icon: 'go' },
       { name: 'Java', icon: 'openjdk' },
       { name: 'TypeScript', icon: 'typescript' },
       { name: 'Python', icon: 'python' },
+      { name: 'Node.js', icon: 'nodedotjs' },
+      { name: 'Bun', icon: 'bun' },
     ],
   },
   {
     name: 'Backend',
     items: [
       { name: 'Spring Boot', icon: 'springboot' },
+      { name: 'Express', icon: 'express' },
       { name: 'gRPC', icon: 'grpc' },
       { name: 'GraphQL', full: 'GraphQL (gqlgen)', icon: 'graphql' },
       { name: 'REST', icon: 'rest' },
