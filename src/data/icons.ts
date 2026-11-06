@@ -45,6 +45,8 @@ export const icons = {
   mcp: { d: "M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4", color: "var(--accent)", stroke: true },
   playwright: { d: "M3 6c3-1.5 6-1.5 9 0v5c0 3.5-2 6-4.5 6S3 14.5 3 11zM12 9c3-1.5 6-1.5 9 0v5c0 3.5-2 6-4.5 6S12 17.5 12 14zM5.5 9.5H7M8.5 9.5H10M6 13c.8.8 2.2.8 3 0M14.5 12.5H16M17.5 12.5H19M15 17c.8-.8 2.2-.8 3 0", color: "#2EAD33", stroke: true },
   pi: { d: "M3 5h18v14H3zM7.5 10h9M10 10v6M14 10v4.5c0 1 .5 1.5 1.5 1.5", color: "var(--accent)", stroke: true },
+  monolith: { d: "M5 3h14v18H5zM5 9h14M5 15h14M9 6h1M9 12h1M9 18h1", color: "var(--accent)", stroke: true },
+  pbc: { d: "M12 3l8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9M8 5.3l8 4.4", color: "var(--accent)", stroke: true },
   microservices: { d: "M10 5a2 2 0 1 0 4 0 2 2 0 1 0-4 0M3 18a2 2 0 1 0 4 0 2 2 0 1 0-4 0M17 18a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 7v4M12 11l-6 5.2M12 11l6 5.2", color: "var(--accent)", stroke: true },
 } satisfies Record<string, Icon>;
 

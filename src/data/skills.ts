@@ -32,7 +32,14 @@ export const skills: SkillGroup[] = [
       { name: 'REST', icon: 'rest' },
       { name: 'Kafka', icon: 'apachekafka' },
       { name: 'RabbitMQ', icon: 'rabbitmq' },
+    ],
+  },
+  {
+    name: 'Architecture',
+    items: [
       { name: 'Microservices', icon: 'microservices' },
+      { name: 'Monolith', full: 'Monolith (single deployable service)', icon: 'monolith' },
+      { name: 'PBC', full: 'Packaged Business Capabilities (composable architecture)', icon: 'pbc' },
     ],
   },
   {
